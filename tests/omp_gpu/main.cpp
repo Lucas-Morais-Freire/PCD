@@ -43,8 +43,13 @@ public:
         this->sz = sz;
         x = new int[sz];
         y = new int[sz];
+
+        #pragma omp target enter data map(alloc:x[0:sz], y[0:sz], ax, ay, sz)
+        #pragma omp target update to(sz)
     }
     ~obj() {
+        #pragma omp target exit data map(release:x[0:sz], y[0:sz], ax, ay, sz)
+
         delete[] x;
         delete[] y;
     }
@@ -70,15 +75,13 @@ int main() {
     for (size_t i = 0; i < SZ; i++) {
         test.x[i] = i;
     }
-    
     #pragma omp target enter data map(to:test)
-    #pragma omp target enter data map(to:test.x[0:SZ])
-    #pragma omp target enter data map(to:test.y[0:SZ])
+    
+    #pragma omp target update to(test.x[0:SZ])
 
     test.computation();
 
-    #pragma omp target exit data map(from:test.x[0:SZ])
-    #pragma omp target exit data map(from:test.y[0:SZ])
+    #pragma omp target update from(test.x[0:SZ], test.y[0:SZ])
 
     std::cout << "x: ";
     print_array(test.x, SZ);
