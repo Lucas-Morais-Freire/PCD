@@ -1,6 +1,6 @@
 #include <iostream>
 #include <omp.h>
-#define SZ 100000000
+#define SZ 10
 
 template <typename T>
 void print_array(T* arr, int sz) {
@@ -57,17 +57,21 @@ int main() {
     
     #pragma omp target update to(test._x[0:SZ], test._sz)
     
+    // #pragma omp target update to(test._x[0:SZ])
     computation(test._x, test._y, test._sz);
+    // #pragma omp target update to(test._x[0:SZ])
     computation(test._x, test._y, test._sz);
+    // #pragma omp target update to(test._x[0:SZ])
     computation(test._x, test._y, test._sz);
+    // #pragma omp target update to(test._x[0:SZ])
     computation(test._x, test._y, test._sz);
 
     #pragma omp target update from(test._x[0:SZ], test._y[0:SZ])
 
-    // std::cout << "x: ";
-    // print_array(test._x, SZ);
-    // std::cout << "y: ";
-    // print_array(test._y, SZ);
+    std::cout << "x: ";
+    print_array(test._x, SZ);
+    std::cout << "y: ";
+    print_array(test._y, SZ);
 
     #ifdef _OPENMP
     std::cout << "num devices: " << omp_get_num_devices() << ", On device: " << omp_get_default_device() << "\n";
