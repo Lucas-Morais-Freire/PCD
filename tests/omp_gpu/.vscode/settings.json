@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "functional": "cpp",
-        "*.in": "cpp"
+        "*.in": "cpp",
+        "cstdlib": "cpp",
+        "new": "cpp"
     }
 }

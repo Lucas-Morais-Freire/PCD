@@ -1,5 +1,8 @@
 #include <iostream>
 #include <omp.h>
+
+#include "lorem.h"
+#include "ipsum.h"
 #define SZ 10
 
 template <typename T>
@@ -16,29 +19,6 @@ void print_array(T* arr, int sz) {
     std::cout << "]\n";
 }
 
-struct obj {
-public:
-    int* _x;
-    int* _y;
-    size_t _sz;
-
-    obj(size_t sz) {
-        _sz = sz;
-        _x = new int[sz];
-        _y = new int[sz];
-
-        #pragma omp target enter data map(alloc: _x[0:_sz], _y[0:_sz], _sz)
-    }
-
-    ~obj() {
-        #pragma omp target exit data map(release: _x[0:_sz], _y[0:_sz], _sz)
-
-        delete[] _x;
-        delete[] _y;
-    }
-
-};
-
 void computation(int *&x, int *&y, size_t &sz) {
     #pragma omp target teams distribute parallel for simd
     for (size_t i = 0; i < sz; i++) {
@@ -50,28 +30,30 @@ void computation(int *&x, int *&y, size_t &sz) {
 
 
 int main() {
-    obj test(SZ);
-    for (size_t i = 0; i < SZ; i++) {
-        test._x[i] = i;
-    }
-    
-    #pragma omp target update to(test._x[0:SZ], test._sz)
-    
-    // #pragma omp target update to(test._x[0:SZ])
-    computation(test._x, test._y, test._sz);
-    // #pragma omp target update to(test._x[0:SZ])
-    computation(test._x, test._y, test._sz);
-    // #pragma omp target update to(test._x[0:SZ])
-    computation(test._x, test._y, test._sz);
-    // #pragma omp target update to(test._x[0:SZ])
-    computation(test._x, test._y, test._sz);
+    lorem lor(SZ);
+    ipsum ips(SZ);
 
-    #pragma omp target update from(test._x[0:SZ], test._y[0:SZ])
+    
+    int* z = ips.get_z();
+    for (size_t i = 0; i < SZ; i++) {
+        z[i] = i;
+        lor.x[i] = 1;
+    }
+
+    ips.target_enter(lor);
+
+    ips.computation(lor);
+    // ips.target_update_from(lor);
+    ips.computation(lor);
+
+    ips.target_update_from(lor);
 
     std::cout << "x: ";
-    print_array(test._x, SZ);
+    print_array(lor.x, SZ);
     std::cout << "y: ";
-    print_array(test._y, SZ);
+    print_array(lor.y, SZ);
+
+    ips.target_exit(lor);
 
     #ifdef _OPENMP
     std::cout << "num devices: " << omp_get_num_devices() << ", On device: " << omp_get_default_device() << "\n";

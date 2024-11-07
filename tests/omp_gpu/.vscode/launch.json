@@ -5,6 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "CUDA C++: Launch",
+            "type": "cuda-gdb",
+            "request": "launch",
+            "program": "/root/github/PCD/tests/omp_gpu/main",
+            "cwd": "/root/github/PCD/tests/omp_gpu"
+        },
+        
+        {
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
