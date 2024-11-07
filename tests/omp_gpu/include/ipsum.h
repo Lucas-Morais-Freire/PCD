@@ -1,7 +1,7 @@
 #ifndef IPSUM_H
 #define IPSUM_H
 #include <cstdlib>
-#include "lorem.h"
+#include <lorem.h>
 
 class ipsum {
     int* z;

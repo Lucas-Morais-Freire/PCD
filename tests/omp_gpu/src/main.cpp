@@ -1,8 +1,8 @@
 #include <iostream>
 #include <omp.h>
 
-#include "lorem.h"
-#include "ipsum.h"
+#include <lorem.h>
+#include <ipsum.h>
 #define SZ 10
 
 template <typename T>
@@ -19,20 +19,17 @@ void print_array(T* arr, int sz) {
     std::cout << "]\n";
 }
 
-void computation(int *&x, int *&y, size_t &sz) {
-    #pragma omp target teams distribute parallel for simd
-    for (size_t i = 0; i < sz; i++) {
-        y[i] = x[i] + 10;
+
+int main(int argc, char** argv) {
+    if (argc < 2 || argc > 2) {
+        std::cout << "usage: ./main <n-computations>\n";
+        return -1;
     }
 
-    std::swap<int*>(x, y);
-}
+    int n_comps = strtol(argv[1], nullptr, 10);
 
-
-int main() {
     lorem lor(SZ);
     ipsum ips(SZ);
-
     
     int* z = ips.get_z();
     for (size_t i = 0; i < SZ; i++) {
@@ -42,9 +39,9 @@ int main() {
 
     ips.target_enter(lor);
 
-    ips.computation(lor);
-    // ips.target_update_from(lor);
-    ips.computation(lor);
+    for (int i = 0; i < n_comps; i++) {
+        ips.computation(lor);
+    }
 
     ips.target_update_from(lor);
 
