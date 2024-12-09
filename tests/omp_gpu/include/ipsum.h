@@ -6,12 +6,15 @@
 class ipsum {
     int* z;
     size_t sz;
+
+    int* x_dev;
+    int* y_dev;
 public:
     ipsum(size_t sz);
 
     int* get_z() { return z; }
 
-    void target_enter(lorem& lor) const;
+    void target_enter(lorem& lor);
 
     void target_exit(lorem& lor) const;
 

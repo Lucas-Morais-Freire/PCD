@@ -3,17 +3,17 @@
 
 #include <lorem.h>
 #include <ipsum.h>
-#define SZ 10
+#define SZ 10//0000000
 
 template <typename T>
-void print_array(T* arr, int sz) {
+void print_array(T* arr, size_t sz) {
     if (sz == 0) {
         std::cout << "[]\n";
         return;
     }
 
     std::cout << '[' << arr[0];
-    for (int i = 1; i < sz; i++) {
+    for (size_t i = 1; i < sz; i++) {
         std::cout << ", " << arr[i];
     }
     std::cout << "]\n";
@@ -43,6 +43,7 @@ int main(int argc, char** argv) {
         ips.computation(lor);
     }
 
+
     ips.target_update_from(lor);
 
     std::cout << "x: ";
@@ -51,7 +52,7 @@ int main(int argc, char** argv) {
     print_array(lor.y, SZ);
 
     ips.target_exit(lor);
-
+    
     #ifdef _OPENMP
     std::cout << "num devices: " << omp_get_num_devices() << ", On device: " << omp_get_default_device() << "\n";
     #endif

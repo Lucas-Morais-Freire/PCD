@@ -1,0 +1,4 @@
+nvcc -gencode arch=compute_86,code=sm_86 -g -G -c src/main.cpp -o src/main.o -I./include -Xcompiler "-Wall -Wextra -g -fopenmp -v  -MMD -MP -MF src/main.d"
+nvcc -gencode arch=compute_86,code=sm_86 -g -G -c src/lorem.cpp -o src/lorem.o -I./include -Xcompiler "-Wall -Wextra -g -fopenmp -v  -MMD -MP -MF src/lorem.d"
+nvcc -gencode arch=compute_86,code=sm_86 -g -G -c src/ipsum.cpp -o src/ipsum.o -I./include -Xcompiler "-Wall -Wextra -g -fopenmp -v  -MMD -MP -MF src/ipsum.d"
+nvcc src/ipsum.o src/lorem.o src/main.o -o main -Xcompiler "-Wall -Wextra -g -fopenmp -v "

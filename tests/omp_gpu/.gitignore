@@ -2,3 +2,5 @@
 *.d
 main
 .vscode/
+*.nsys-rep
+*.ncu-rep
