@@ -33,13 +33,10 @@ void ipsum::computation(lorem &lor) {
     int *lx = lor.x;
     int *ly = lor.y;
     static int *lz = z;
-    // unsigned long long _x, _y, _z;
     static size_t _sz = sz;
     #pragma omp target teams distribute parallel for simd 
     for (size_t i = 0; i < _sz; i++) {
         ly[i] = lx[i] + lz[i];
-
-        lz[i] = lz[i];
     }
 
     // std::cout << (int*)_x << ' ' << (int*)_y << ' ' << (int*)_z <<'\n';

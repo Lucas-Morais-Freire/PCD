@@ -1,4 +1,5 @@
 #include <lorem.h>
+#include <ctype.h>
 
 lorem::lorem(size_t sz) : sz(sz) {
     x = new int[sz];

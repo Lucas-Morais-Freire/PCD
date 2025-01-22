@@ -3,7 +3,7 @@
 
 #include <lorem.h>
 #include <ipsum.h>
-#define SZ 10//0000000
+#define SZ 100000000
 
 template <typename T>
 void print_array(T* arr, size_t sz) {
@@ -13,8 +13,12 @@ void print_array(T* arr, size_t sz) {
     }
 
     std::cout << '[' << arr[0];
-    for (size_t i = 1; i < sz; i++) {
+    size_t N = sz < 10 ? sz : 10;
+    for (size_t i = 1; i < N; i++) {
         std::cout << ", " << arr[i];
+    }
+    if (sz > 10) {
+        std::cout << ", ...";
     }
     std::cout << "]\n";
 }
@@ -59,3 +63,16 @@ int main(int argc, char** argv) {
 
     return 0;
 }
+
+// #include <omp.h>
+// #include <stdio.h>
+
+// int main() {
+
+//     #pragma omp parallel
+//     {
+//         printf("Hello from thread %d!\n", omp_get_thread_num());
+//     }
+
+//     return 0;
+// }
