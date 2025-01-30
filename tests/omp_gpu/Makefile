@@ -1,7 +1,7 @@
-COMP := g++
+COMP := clang++-18
 GXXFLAGS := -Wall -Wextra -g -fopenmp -fcf-protection=none -fno-stack-protector # -O3
 NVCCFLAGS := -g -G
-CLANGXXFLAGS := -Wall -Wextra -g -fopenmp -fopenmp-targets=nvptx64 -O3
+CLANGXXFLAGS := -Wall -Wextra -O3 -fopenmp -fopenmp-targets=nvptx64 # -g
 GENCODE := arch=compute_86,code=sm_86
 SRCS := src/ipsum.cpp src/lorem.cpp src/main.cpp
 INCLUDE := ./include
@@ -26,13 +26,12 @@ else ifeq ($(COMP), nvcc)
 COMPILE = $(COMP) -gencode $(GENCODE) $(NVCCFLAGS) -c $< -o $*.o $(INCLUDE_FLAGS) -Xcompiler "$(GXXFLAGS) -MMD -MP -MF $*.d"
 LINK = $(COMP) $^ -o $@ -Xcompiler "$(GXXFLAGS)"
 
-else ifeq ($(COMP), clang++)
+else ifeq ($(COMP), clang++-18)
 
 COMPILE = $(COMP) $(CLANGXXFLAGS) -MMD -MP -MF $*.d -c $< -o $*.o $(INCLUDE_FLAGS)
 LINK = $(COMP) $(CLANGXXFLAGS) $^ -o $@
 
 endif
-da
 
 # test:
 # 	@echo $(LINK)
